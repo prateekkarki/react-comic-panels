@@ -2,27 +2,22 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
-import packageJson from "./package.json" assert { type: "json" };
+import fs from 'fs';
+const pkg = JSON.parse(fs.readFileSync(new URL('./package.json', import.meta.url)));
 
 export default [
   {
     input: "src/index.ts",
     output: [
-      {
-        file: packageJson.module,
-        format: "esm",
-        sourcemap: true,
-      },
+      { file: pkg.module, format: 'esm' },
+      { file: pkg.main, format: 'cjs' }
     ],
-    plugins: [
-      resolve(),
-      commonjs(),
-      typescript({ tsconfig: "./tsconfig.json" }),
-    ],
+    external: ['react', 'react-dom'],
+    plugins: [resolve(), commonjs(), typescript({ tsconfig: './tsconfig.json' })]
   },
   {
-    input: "dist/esm/types/index.d.ts",
-    output: [{ file: "dist/index.d.ts", format: "esm" }],
-    plugins: [dts()],
+    input: 'src/index.ts',
+    output: { file: pkg.types, format: 'es' },
+    plugins: [dts()]
   },
 ];
