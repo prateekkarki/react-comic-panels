@@ -3,7 +3,9 @@
   "version": "0.1.2",
   "description": "Composable React components for creating comic-style layouts.",
   "scripts": {
-    "rollup": "rollup -c"
+    "rollup": "rollup -c",
+    "dev": "vite",
+    "preview": "vite preview"
   },
   "author": "Prateek Karki",
   "license": "ISC",
