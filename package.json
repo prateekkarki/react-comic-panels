@@ -17,7 +17,6 @@
     "rollup-plugin-dts": "^6.2.1",
     "typescript": "^5.8.3"
   },
-  "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [
     "dist"
