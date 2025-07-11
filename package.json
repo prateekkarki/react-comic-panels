@@ -1,5 +1,5 @@
 {
-  "name": "react-comic-panels",
+  "name": "@prateekkarki/react-comic-panels",
   "version": "0.1.0",
   "description": "Composable React components for creating comic-style layouts.",
   "scripts": {
@@ -21,6 +21,9 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/prateekkarki"
+  },
   "types": "dist/index.d.ts",
   "dependencies": {
     "tslib": "^2.8.1"
