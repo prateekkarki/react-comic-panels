@@ -1,0 +1,70 @@
+/* Root comic container */
+.comicPanels {
+  width: 100%;
+  box-sizing: border-box;
+  background: #f4f4f4;
+  padding: 16px;
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.comicPanels__panel-row {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.comicPanels__panel {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow: hidden;
+  min-height: 200px;
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.comicPanels__panel-image {
+  pointer-events: none;
+  user-select: none;
+  max-width: 100%;
+  max-height: 100%;
+  z-index: 1;
+}
+
+.comicPanels__panel-image img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.comicPanels__speech-bubble,
+.comicPanels__thought-bubble {
+  background: #fffbe7;
+  border: 2px solid #333;
+  border-radius: 24px;
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  color: #222;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  min-width: 60px;
+  min-height: 32px;
+  z-index: 2;
+  position: absolute;
+  max-width: 80%;
+  word-break: break-word;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+}
+
+.comicPanels__speech-bubble {
+  /* Optionally add a speech tail with ::after */
+}
+
+.comicPanels__thought-bubble {
+  /* Optionally add a thought tail with ::after */
+  border-style: dashed;
+} 
