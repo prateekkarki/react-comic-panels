@@ -20,21 +20,25 @@ interface SpeechBubbleProps {
   children: React.ReactNode;
 }
 
-function getAnchorStyle(anchor: Anchor = 'top-left') {
-  const style: React.CSSProperties = { position: 'absolute' };
+function getAnchorStyle(anchor: Anchor = 'top-left', size: Size): React.CSSProperties {
+  const initialStyle: React.CSSProperties = { position: 'absolute' };
   switch (anchor) {
     case 'top-left':
-      style.top = 0; style.left = 0; break;
+      const topLeftStyle: React.CSSProperties = { ...initialStyle, top: 0, left: 0 };
+      return topLeftStyle;
     case 'top-right':
-      style.top = 0; style.right = 0; break;
+      const topRightStyle: React.CSSProperties = { ...initialStyle, top: 0, left: `calc(${1 - size.widthRatio} * 100% - 5px)` };
+      return topRightStyle;
     case 'bottom-left':
-      style.bottom = 0; style.left = 0; break;
+      const bottomLeftStyle: React.CSSProperties = { ...initialStyle, top: `calc(${1 - size.heightRatio} * 100% - 5px)`, left: 0 };
+      return bottomLeftStyle;
     case 'bottom-right':
-      style.bottom = 0; style.right = 0; break;
+      const bottomRightStyle: React.CSSProperties = { ...initialStyle, top: `calc(${1 - size.heightRatio} * 100% - 5px)`, left: `calc(${1 - size.widthRatio} * 100% - 5px)` };
+      return bottomRightStyle;
     case 'center':
-      style.top = '50%'; style.left = '50%'; style.transform = 'translate(-50%, -50%)'; break;
+      const centerStyle: React.CSSProperties = { ...initialStyle, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
+      return centerStyle;
   }
-  return style;
 }
 
 function getTailProps(anchor: Anchor = 'top-left') {
@@ -57,31 +61,33 @@ function getTailProps(anchor: Anchor = 'top-left') {
 }
 
 export const SpeechBubble: React.FC<SpeechBubbleProps> = ({ animation, anchor, position, size = { widthRatio: 0.3, heightRatio: 0.3 }, children }) => {
-  const anchorStyle = getAnchorStyle(anchor);
+  const anchorStyle = getAnchorStyle(anchor, size);
   const posStyle = position ? { left: position.xRatio * 100 + '%', top: position.yRatio * 100 + '%' } : {};
   const style: React.CSSProperties = { ...anchorStyle, ...posStyle, width: `${size.widthRatio * 100}%`, height: `${size.heightRatio * 100}%` };
   if (animation) style.animation = animation;
   const { style: tailStyle, transform: tailTransform } = getTailProps(anchor);
   return (
     <div className="comicPanels__speech-bubble" style={style}>
-      <Textfit style={{ width: '100%', height: '100%' }}>
-        {children}
-      </Textfit>
-      <svg
-        viewBox="0 0 32 32"
-        style={tailStyle}
-        width={32}
-        height={32}
-        className="comicPanels__speech-bubble-tail"
-      >
-        <path
-          d="M16 0 C18 12, 28 16, 16 32 C4 16, 14 12, 16 0 Z"
-          fill="#fffbe7"
-          stroke="#333"
-          strokeWidth="2"
-          transform={tailTransform}
-        />
-      </svg>
+      <div className="comicPanels__speech-bubble-inner" >
+        <Textfit style={{ width: '100%', height: '100%' }}>
+          {children}
+        </Textfit>
+        <svg
+          viewBox="0 0 32 32"
+          style={tailStyle}
+          width={32}
+          height={32}
+          className="comicPanels__speech-bubble-tail"
+        >
+          <path
+            d="M16 0 C18 12, 28 16, 16 32 C4 16, 14 12, 16 0 Z"
+            fill="#fffbe7"
+            stroke="#333"
+            strokeWidth="2"
+            transform={tailTransform}
+          />
+        </svg>
+      </div>
     </div>
   );
 }; 

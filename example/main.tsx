@@ -14,8 +14,9 @@ const App = () => (
         />
         <SpeechBubble
           animation="rotate(90deg) 0.5s"
-          anchor="top-left"
-          position={{ xRatio: 0.5, yRatio: 0.5 }}
+          anchor="bottom-right"
+          size={{ widthRatio: 0.5, heightRatio: 0.2 }}
+          // position={{ xRatio: 0, yRatio: 0.1 }}
         >
           Whoa… this one’s faster, lighter, and has built-in AI! Time to migrate everything.
         </SpeechBubble>
