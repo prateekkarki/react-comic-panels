@@ -1,8 +1,13 @@
 import React from 'react';
+import Textfit from '../Textfit';
 
 interface Position {
-  x: number;
-  y: number;
+  xRatio: number;
+  yRatio: number;
+}
+interface Size {
+  widthRatio: number;
+  heightRatio: number;
 }
 
 type Anchor = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'center';
@@ -11,6 +16,7 @@ interface SpeechBubbleProps {
   animation?: string;
   anchor?: Anchor;
   position?: Position;
+  size?: Size;
   children: React.ReactNode;
 }
 
@@ -50,15 +56,17 @@ function getTailProps(anchor: Anchor = 'top-left') {
   return { style, transform };
 }
 
-export const SpeechBubble: React.FC<SpeechBubbleProps> = ({ animation, anchor, position, children }) => {
+export const SpeechBubble: React.FC<SpeechBubbleProps> = ({ animation, anchor, position, size = { widthRatio: 0.3, heightRatio: 0.3 }, children }) => {
   const anchorStyle = getAnchorStyle(anchor);
-  const posStyle = position ? { left: position.x, top: position.y } : {};
-  const style: React.CSSProperties = { ...anchorStyle, ...posStyle };
+  const posStyle = position ? { left: position.xRatio * 100 + '%', top: position.yRatio * 100 + '%' } : {};
+  const style: React.CSSProperties = { ...anchorStyle, ...posStyle, width: `${size.widthRatio * 100}%`, height: `${size.heightRatio * 100}%` };
   if (animation) style.animation = animation;
   const { style: tailStyle, transform: tailTransform } = getTailProps(anchor);
   return (
     <div className="comicPanels__speech-bubble" style={style}>
-      {children}
+      <Textfit style={{ width: '100%', height: '100%' }}>
+        {children}
+      </Textfit>
       <svg
         viewBox="0 0 32 32"
         style={tailStyle}
