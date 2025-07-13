@@ -14,6 +14,7 @@ export const Panel: React.FC<PanelProps> = ({ size = 1, background, children }) 
     backgroundSize: background ? 'cover' : undefined,
     backgroundPosition: background ? 'center' : undefined,
     minWidth: 0,
+    maxWidth: `${100 * size}%`,
     minHeight: 0,
     display: 'flex',
     flexDirection: 'column',
