@@ -12,18 +12,13 @@ interface TextfitProps {
   className?: string;
 }
 
-function innerWidth(el: HTMLElement) {
-  const style = window.getComputedStyle(el);
-  return el.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
-}
 function innerHeight(el: HTMLElement) {
   const style = window.getComputedStyle(el);
+  console.log("innerHeight---", el.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom), el.clientHeight, parseFloat(style.paddingTop), parseFloat(style.paddingBottom));
   return el.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
 }
-function assertElementFitsWidth(el: HTMLElement, width: number) {
-  return el.scrollWidth - 1 <= width;
-}
 function assertElementFitsHeight(el: HTMLElement, height: number) {
+  console.log("height---", el.scrollHeight - 1, height);
   return el.scrollHeight - 1 <= height;
 }
 function throttleFn<T extends (...args: any[]) => void>(fn: T, wait: number): T {
@@ -51,11 +46,10 @@ function uniqueId() {
 
 const DEFAULT_MIN = 1;
 const DEFAULT_MAX = 100;
-const DEFAULT_THROTTLE = 50;
+const DEFAULT_THROTTLE = 500;
 
 const Textfit: React.FC<TextfitProps> = ({
   children,
-  text,
   min = DEFAULT_MIN,
   max = DEFAULT_MAX,
   throttle = DEFAULT_THROTTLE,
@@ -72,22 +66,17 @@ const Textfit: React.FC<TextfitProps> = ({
 
   // Cancel running process by changing pid
   const cancelProcess = () => {
+    console.log("cancelProcess")
     pidRef.current = uniqueId();
   };
 
-  // Main fitting logic (always multi-line)
   const process = useCallback(() => {
     const el = parentRef.current;
     const wrapper = childRef.current;
     if (!el || !wrapper) return;
-    const originalWidth = innerWidth(el);
     const originalHeight = innerHeight(el);
     if (originalHeight <= 0 || isNaN(originalHeight)) {
       console.warn('Can not process element without height. Make sure the element is displayed and has a static height.');
-      return;
-    }
-    if (originalWidth <= 0 || isNaN(originalWidth)) {
-      console.warn('Can not process element without width. Make sure the element is displayed and has a static width.');
       return;
     }
     const pid = uniqueId();
@@ -97,38 +86,24 @@ const Textfit: React.FC<TextfitProps> = ({
     let low = min;
     let high = max;
     setReady(false);
-    while (high - low > 0.1) {
+    while (high - low > 1) {
       if (shouldCancelProcess()) return;
       const mid = (low + high) / 2;
       wrapper.style.fontSize = mid + 'px';
+      console.log('fitsHeight', assertElementFitsHeight(wrapper, originalHeight), `mid: ${mid}, low: ${low}, high: ${high}`);
       if (assertElementFitsHeight(wrapper, originalHeight)) {
         low = mid;
       } else {
         high = mid;
       }
     }
-    // Step 2: Binary search for width (secondary)
-    wrapper.style.fontSize = high + 'px';
-    if (!assertElementFitsWidth(wrapper, originalWidth)) {
-      low = min;
-      // Don't reset high, keep it from previous step
-      while (high - low > 0.1) {
-        if (shouldCancelProcess()) return;
-        const mid = (low + high) / 2;
-        wrapper.style.fontSize = mid + 'px';
-        if (assertElementFitsWidth(wrapper, originalWidth)) {
-          low = mid;
-        } else {
-          high = mid;
-        }
-      }
-    }
-    // Step 3: Clamp and set
-    let finalFontSize = Math.max(min, Math.min(high, max));
+    // Step 2: Clamp and set
+    let finalFontSize = Math.max(min, Math.min(low, max));
+    console.log("finalFontSize", finalFontSize, `low: ${low}, min: ${min}, max: ${max}`);
     if (shouldCancelProcess()) return;
     setFontSize(finalFontSize);
     setReady(true);
-  }, [min, max, text, children]);
+  }, [min, max,  children]);
 
   // Throttled resize handler
   const handleWindowResize = useCallback(
@@ -153,26 +128,21 @@ const Textfit: React.FC<TextfitProps> = ({
     process();
     return cancelProcess;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [min, max, text, children, style]);
+  }, [min, max,  children, style]);
 
   // Compose style
   const finalStyle: React.CSSProperties = {
     ...style,
     fontSize: fontSize || undefined,
   };
-  const wrapperStyle: React.CSSProperties = {
-    display: ready ? 'block' : 'inline-block',
-    whiteSpace: 'normal',
-  };
+
+  console.log("fontSize", fontSize);
+  console.log("finalStyle", finalStyle);
 
   return (
     <div ref={parentRef} style={finalStyle} className={className} {...props}>
-      <div ref={childRef} style={wrapperStyle}>
-        {text !== undefined && typeof children === 'function'
-          ? ready
-            ? (children as (t: string) => React.ReactNode)(text)
-            : text
-          : text !== undefined ? text : children}
+      <div ref={childRef} >
+        {children}
       </div>
     </div>
   );
