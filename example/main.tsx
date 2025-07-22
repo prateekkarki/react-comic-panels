@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Comic, PanelRow, Panel, PanelImage, SpeechBubble, ThoughtBubble } from '../src';
+import { Anchor } from '../src/components/types';
 
 const App = () => (
   <div style={{ padding: 20}}>
@@ -14,7 +15,7 @@ const App = () => (
         />
         <SpeechBubble
           animation="rotate(90deg) 0.5s"
-          anchor="bottom-right"
+          anchor={Anchor.BottomRight}
           size={{ widthRatio: 0.5, heightRatio: 0.2 }}
           // position={{ xRatio: 0, yRatio: 0.1 }}
         >
@@ -32,7 +33,7 @@ const App = () => (
         <ThoughtBubble anchor="bottom-right">Guess I’ll migrate again.</ThoughtBubble>
       </Panel>
       <Panel size={0.5} background="#333">
-        <SpeechBubble anchor="center">Developers don't age, they just accumulate tech debt.</SpeechBubble>
+        <SpeechBubble anchor={Anchor.Center}>Developers don't age, they just accumulate tech debt.</SpeechBubble>
       </Panel>
     </PanelRow>
   </Comic>
