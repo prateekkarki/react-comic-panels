@@ -1,0 +1,9 @@
+.Textfit--parent {
+    width: 100%;
+    height: 100%;
+}
+
+.Textfit--wrapper {
+    display: inline-block;
+    white-space: normal;
+}

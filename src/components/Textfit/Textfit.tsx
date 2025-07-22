@@ -1,11 +1,10 @@
 import React, { useRef, useState, useLayoutEffect, useCallback } from 'react';
+import './Textfit.css';
 
 interface TextfitProps {
   children?: React.ReactNode;
-  text?: string;
   min?: number;
   max?: number;
-  forceSingleModeWidth?: boolean; // will be ignored, but keep for compatibility
   throttle?: number;
   autoResize?: boolean;
   style?: React.CSSProperties;
@@ -86,6 +85,7 @@ const Textfit: React.FC<TextfitProps> = ({
     let low = min;
     let high = max;
     setReady(false);
+    wrapper.style.visibility = 'hidden';
     while (high - low > 1) {
       if (shouldCancelProcess()) return;
       const mid = (low + high) / 2;
@@ -101,6 +101,8 @@ const Textfit: React.FC<TextfitProps> = ({
     let finalFontSize = Math.max(min, Math.min(low, max));
     console.log("finalFontSize", finalFontSize, `low: ${low}, min: ${min}, max: ${max}`);
     if (shouldCancelProcess()) return;
+    wrapper.style.fontSize = finalFontSize + 'px';
+    wrapper.style.visibility = 'visible';
     setFontSize(finalFontSize);
     setReady(true);
   }, [min, max,  children]);
@@ -127,25 +129,27 @@ const Textfit: React.FC<TextfitProps> = ({
   useLayoutEffect(() => {
     process();
     return cancelProcess;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [min, max,  children, style]);
 
-  // Compose style
   const finalStyle: React.CSSProperties = {
     ...style,
     fontSize: fontSize || undefined,
+  };
+
+  const wrapperStyle: React.CSSProperties = {
+    visibility: ready ? 'visible' : 'hidden',
   };
 
   console.log("fontSize", fontSize);
   console.log("finalStyle", finalStyle);
 
   return (
-    <div ref={parentRef} style={finalStyle} className={className} {...props}>
-      <div ref={childRef} >
+    <div className={`Textfit--parent ${className ?? ""}`} ref={parentRef} style={finalStyle} {...props}>
+      <div className={`Textfit--wrapper`} ref={childRef} style={wrapperStyle} >
         {children}
       </div>
     </div>
   );
 };
 
-export default Textfit; 
+export { Textfit }; 
