@@ -49,7 +49,7 @@
 .comicPanels__thought-bubble {
   background: #fffbe7;
   border: 2px solid #333;
-  border-radius: 10%;
+  border-radius: 10px;
   font-size: clamp(12px, 2vw, 32px);
   color: #222;
   box-shadow: 0 2px 8px rgba(0,0,0,0.10);
@@ -59,10 +59,9 @@
   font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
 }
 
-  .comicPanels__speech-bubble-inner {
+.comicPanels__speech-bubble-inner {
     padding: 4%;
-    width: 85%;
-    height: 70%;
+    height: 90%;
 }
 
 .comicPanels__thought-bubble {

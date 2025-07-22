@@ -1,6 +1,6 @@
-import React from 'react';
-import Textfit from '../Textfit';
+import React, { useRef, useState, useEffect } from 'react';
 import { Anchor } from '../types';
+import { Textfit } from '../Textfit';
 
 interface Position {
   xRatio: number;
@@ -42,13 +42,17 @@ function getAnchorStyle(anchor: Anchor = Anchor.TopLeft, size: Size): React.CSSP
 
 export const SpeechBubble: React.FC<SpeechBubbleProps> = ({ animation, anchor, position, size = { widthRatio: 0.3, heightRatio: 0.3 }, children }) => {
   const anchorStyle = getAnchorStyle(anchor, size);
+  const containerRef = useRef<HTMLDivElement>(null);
   const posStyle = position ? { left: position.xRatio * 100 + '%', top: position.yRatio * 100 + '%' } : {};
   const style: React.CSSProperties = { ...anchorStyle, ...posStyle, width: `${size.widthRatio * 100}%`, height: `${size.heightRatio * 100}%` };
+
+
   if (animation) style.animation = animation;
+
   return (
-    <div className="comicPanels__speech-bubble" style={style}>
+    <div className="comicPanels__speech-bubble" style={style} ref={containerRef}>
       <div className="comicPanels__speech-bubble-inner" >
-        <Textfit style={{ width: '100%', height: '100%' }}>
+        <Textfit>
           {children}
         </Textfit>
       </div>

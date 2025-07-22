@@ -33,7 +33,7 @@ const App = () => (
         <ThoughtBubble anchor="bottom-right">Guess I’ll migrate again.</ThoughtBubble>
       </Panel>
       <Panel size={0.5} background="#333">
-        <SpeechBubble anchor={Anchor.Center}>Developers don't age, they just accumulate tech debt.</SpeechBubble>
+        {/* <SpeechBubble anchor={Anchor.Center}>Developers don't age, they just accumulate tech debt.</SpeechBubble> */}
       </Panel>
     </PanelRow>
   </Comic>
