@@ -10,8 +10,8 @@ export default [
   {
     input: 'src/index.ts',
     output: [
-      { file: pkg.module, format: 'esm' },
-      { file: pkg.main, format: 'cjs' },
+      { file: pkg.module, format: 'esm', sourcemap: true },
+      { file: pkg.main, format: 'cjs', sourcemap: true },
     ],
     external: ['react', 'react-dom'],
     plugins: [resolve(), commonjs(), typescript({ tsconfig: './tsconfig.json' }), postcss()],
