@@ -6,6 +6,6 @@ export default defineConfig({
   root: './example',
   publicDir: '.example/public',
   build: {
-    outDir: '../dist-example'
-  }
+    outDir: '../dist-example',
+  },
 });
