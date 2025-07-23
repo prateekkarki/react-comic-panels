@@ -1,5 +1,5 @@
 import React, { useRef, useState, useLayoutEffect, useCallback } from 'react';
-import { Parent, Wrapper, WrapperHidden, WrapperVisible } from './style';
+import { Parent, WrapperHidden, WrapperVisible } from './style';
 
 interface TextfitProps {
   children?: React.ReactNode;
@@ -18,16 +18,16 @@ function innerHeight(el: HTMLElement) {
 function assertElementFitsHeight(el: HTMLElement, height: number) {
   return el.scrollHeight - 1 <= height;
 }
-function throttleFn<T extends (...args: any[]) => void>(fn: T, wait: number): T {
+function throttleFn<T extends (...args: unknown[]) => void>(fn: T, wait: number): T {
   let last = 0;
-  let timeout: any = null;
-  return function (this: any, ...args: any[]) {
+  let timeout: ReturnType<typeof setTimeout> | null = null;
+  return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
     const now = Date.now();
     if (now - last >= wait) {
       last = now;
       fn.apply(this, args);
     } else {
-      clearTimeout(timeout);
+      if (timeout) clearTimeout(timeout);
       timeout = setTimeout(
         () => {
           last = Date.now();

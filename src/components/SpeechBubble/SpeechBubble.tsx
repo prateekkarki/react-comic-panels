@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { Anchor, Position, Size } from '../types';
 import { Textfit } from '../Textfit';
 import { getAnchorStyle } from '../../utils/helpers';
