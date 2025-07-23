@@ -4,6 +4,7 @@ import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import fs from 'fs';
 const pkg = JSON.parse(fs.readFileSync(new URL('./package.json', import.meta.url)));
+import postcss from "rollup-plugin-postcss";
 
 export default [
   {
@@ -13,11 +14,12 @@ export default [
       { file: pkg.main, format: 'cjs' }
     ],
     external: ['react', 'react-dom'],
-    plugins: [resolve(), commonjs(), typescript({ tsconfig: './tsconfig.json' })]
+    plugins: [resolve(), commonjs(), typescript({ tsconfig: './tsconfig.json' }), postcss()]
   },
   {
     input: 'src/index.ts',
     output: { file: pkg.types, format: 'es' },
-    plugins: [dts()]
+    plugins: [dts()],
+    external: [/\.css$/]
   },
 ];
