@@ -1,43 +1,30 @@
 import React from 'react';
+import { Anchor, Position, Size } from '../types';
+import { getAnchorStyle } from '../../utils/helpers';
+import { Textfit } from '../Textfit';
 
-interface Position {
-  x: number;
-  y: number;
-}
 
-type Anchor = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'center';
 
 interface ThoughtBubbleProps {
   animation?: string;
   anchor?: Anchor;
   position?: Position;
+  size?: Size;
   children: React.ReactNode;
 }
 
-function getAnchorStyle(anchor: Anchor = 'top-left') {
-  const style: React.CSSProperties = { position: 'absolute' };
-  switch (anchor) {
-    case 'top-left':
-      style.top = 0; style.left = 0; break;
-    case 'top-right':
-      style.top = 0; style.right = 0; break;
-    case 'bottom-left':
-      style.bottom = 0; style.left = 0; break;
-    case 'bottom-right':
-      style.bottom = 0; style.right = 0; break;
-    case 'center':
-      style.top = '50%'; style.left = '50%'; style.transform = 'translate(-50%, -50%)'; break;
-  }
-  return style;
-}
-export const ThoughtBubble: React.FC<ThoughtBubbleProps> = ({ animation, anchor, position, children }) => {
-  const anchorStyle = getAnchorStyle(anchor);
-  const posStyle = position ? { left: position.x, top: position.y } : {};
-  const style: React.CSSProperties = { ...anchorStyle, ...posStyle };
+export const ThoughtBubble: React.FC<ThoughtBubbleProps> = ({ animation, anchor, position, size = { widthRatio: 0.3, heightRatio: 0.3 }, children }) => {
+  const anchorStyle = getAnchorStyle(anchor, size);
+  const posStyle = position ? { left: position.xRatio * 100 + '%', top: position.yRatio * 100 + '%' } : {};
+  const style: React.CSSProperties = { ...anchorStyle, ...posStyle, width: `${size.widthRatio * 100}%`, height: `${size.heightRatio * 100}%` };
   if (animation) style.animation = animation;
   return (
     <div className="comicPanels__thought-bubble" style={style}>
-      {children}
+      <div className="comicPanels__thought-bubble-inner">
+      <Textfit>
+          {children}
+        </Textfit>      
+        </div>
     </div>
   );
 }; 

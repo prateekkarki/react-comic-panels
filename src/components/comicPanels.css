@@ -37,6 +37,7 @@
   user-select: none;
   max-width: 100%;
   max-height: 100%;
+  
 }
 
 .comicPanels__panel-image img {
@@ -57,18 +58,16 @@
   max-width: 80%;
   word-break: break-word;
   font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.comicPanels__speech-bubble-inner {
+.comicPanels__speech-bubble-inner, .comicPanels__thought-bubble-inner {
   padding: 0px 10px;
   height: 100%;
 }
 
-.comicPanels__speech-bubble {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} 
 .comicPanels__thought-bubble {
   border-style: dashed;
 } 

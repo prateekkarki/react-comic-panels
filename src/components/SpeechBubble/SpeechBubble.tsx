@@ -1,15 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Anchor } from '../types';
+import { Anchor, Position, Size } from '../types';
 import { Textfit } from '../Textfit';
-
-interface Position {
-  xRatio: number;
-  yRatio: number;
-}
-interface Size {
-  widthRatio: number;
-  heightRatio: number;
-}
+import { getAnchorStyle } from '../../utils/helpers';
 
 interface SpeechBubbleProps {
   animation?: string;
@@ -19,26 +11,6 @@ interface SpeechBubbleProps {
   children: React.ReactNode;
 }
 
-function getAnchorStyle(anchor: Anchor = Anchor.TopLeft, size: Size): React.CSSProperties {
-  const initialStyle: React.CSSProperties = { position: 'absolute' };
-  switch (anchor) {
-    case Anchor.TopLeft:
-      const topLeftStyle: React.CSSProperties = { ...initialStyle, top: 0, left: 0 };
-      return topLeftStyle;
-    case Anchor.TopRight:
-      const topRightStyle: React.CSSProperties = { ...initialStyle, top: 0, left: `calc(${1 - size.widthRatio} * 100% - 5px)` };
-      return topRightStyle;
-    case Anchor.BottomLeft:
-      const bottomLeftStyle: React.CSSProperties = { ...initialStyle, top: `calc(${1 - size.heightRatio} * 100% - 5px)`, left: 0 };
-      return bottomLeftStyle;
-    case Anchor.BottomRight:
-      const bottomRightStyle: React.CSSProperties = { ...initialStyle, top: `calc(${1 - size.heightRatio} * 100% - 5px)`, left: `calc(${1 - size.widthRatio} * 100% - 5px)` };
-      return bottomRightStyle;
-    case Anchor.Center:
-      const centerStyle: React.CSSProperties = { ...initialStyle, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
-      return centerStyle;
-  }
-}
 
 export const SpeechBubble: React.FC<SpeechBubbleProps> = ({ animation, anchor, position, size = { widthRatio: 0.3, heightRatio: 0.3 }, children }) => {
   const anchorStyle = getAnchorStyle(anchor, size);
