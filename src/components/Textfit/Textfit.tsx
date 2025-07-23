@@ -45,7 +45,7 @@ function uniqueId() {
 
 const DEFAULT_MIN = 1;
 const DEFAULT_MAX = 100;
-const DEFAULT_THROTTLE = 500;
+const DEFAULT_THROTTLE = 100;
 
 const Textfit: React.FC<TextfitProps> = ({
   children,
@@ -60,7 +60,6 @@ const Textfit: React.FC<TextfitProps> = ({
   const parentRef = useRef<HTMLDivElement>(null);
   const childRef = useRef<HTMLDivElement>(null);
   const [fontSize, setFontSize] = useState<number | null>(null);
-  const [ready, setReady] = useState(false);
   const pidRef = useRef<number>(uniqueId());
 
   // Cancel running process by changing pid
@@ -84,8 +83,6 @@ const Textfit: React.FC<TextfitProps> = ({
     // Step 1: Binary search for height (primary)
     let low = min;
     let high = max;
-    setReady(false);
-    wrapper.style.visibility = 'hidden';
     while (high - low > 1) {
       if (shouldCancelProcess()) return;
       const mid = (low + high) / 2;
@@ -102,9 +99,7 @@ const Textfit: React.FC<TextfitProps> = ({
     console.log("finalFontSize", finalFontSize, `low: ${low}, min: ${min}, max: ${max}`);
     if (shouldCancelProcess()) return;
     wrapper.style.fontSize = finalFontSize + 'px';
-    wrapper.style.visibility = 'visible';
     setFontSize(finalFontSize);
-    setReady(true);
   }, [min, max,  children]);
 
   // Throttled resize handler
@@ -117,7 +112,7 @@ const Textfit: React.FC<TextfitProps> = ({
 
   // Run process on mount, prop change, or resize
   useLayoutEffect(() => {
-    if (autoResize) {
+      if (autoResize) {
       window.addEventListener('resize', handleWindowResize);
       return () => {
         window.removeEventListener('resize', handleWindowResize);
@@ -136,16 +131,15 @@ const Textfit: React.FC<TextfitProps> = ({
     fontSize: fontSize || undefined,
   };
 
-  const wrapperStyle: React.CSSProperties = {
-    visibility: ready ? 'visible' : 'hidden',
-  };
-
   console.log("fontSize", fontSize);
   console.log("finalStyle", finalStyle);
 
   return (
-    <div className={`Textfit--parent ${className ?? ""}`} ref={parentRef} style={finalStyle} {...props}>
-      <div className={`Textfit--wrapper`} ref={childRef} style={wrapperStyle} >
+    <div className={`Textfit__parent ${className ?? ""}`} ref={parentRef} style={finalStyle} {...props}>
+      <div className={`Textfit__wrapper Textfit__wrapper--hidden`} ref={childRef}>
+        {children}
+      </div>
+      <div className={`Textfit__wrapper Textfit__wrapper--visible`}>
         {children}
       </div>
     </div>

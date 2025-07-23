@@ -60,11 +60,15 @@
 }
 
 .comicPanels__speech-bubble-inner {
-    padding: 4%;
-    height: 90%;
+  padding: 0px 10px;
+  height: 100%;
 }
 
+.comicPanels__speech-bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} 
 .comicPanels__thought-bubble {
-  /* Optionally add a thought tail with ::after */
   border-style: dashed;
 } 
