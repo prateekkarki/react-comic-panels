@@ -11,4 +11,4 @@ export const PanelImageContainer = styled.div`
     max-width: 100%;
     max-height: 100%;
   }
-`; 
+`;

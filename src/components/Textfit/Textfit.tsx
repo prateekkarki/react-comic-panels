@@ -21,17 +21,20 @@ function assertElementFitsHeight(el: HTMLElement, height: number) {
 function throttleFn<T extends (...args: any[]) => void>(fn: T, wait: number): T {
   let last = 0;
   let timeout: any = null;
-  return function(this: any, ...args: any[]) {
+  return function (this: any, ...args: any[]) {
     const now = Date.now();
     if (now - last >= wait) {
       last = now;
       fn.apply(this, args);
     } else {
       clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        last = Date.now();
-        fn.apply(this, args);
-      }, wait - (now - last));
+      timeout = setTimeout(
+        () => {
+          last = Date.now();
+          fn.apply(this, args);
+        },
+        wait - (now - last)
+      );
     }
   } as T;
 }
@@ -60,7 +63,9 @@ const Textfit: React.FC<TextfitProps> = ({
     if (!el || !wrapper) return;
     const originalHeight = innerHeight(el);
     if (originalHeight <= 0 || isNaN(originalHeight)) {
-      console.warn('Can not process element without height. Make sure the element is displayed and has a static height.');
+      console.warn(
+        'Can not process element without height. Make sure the element is displayed and has a static height.'
+      );
       return;
     }
     // Step 1: Binary search for height (primary)
@@ -76,10 +81,10 @@ const Textfit: React.FC<TextfitProps> = ({
       }
     }
     // Step 2: Clamp and set
-    let finalFontSize = Math.max(min, Math.min(low, max));
+    const finalFontSize = Math.max(min, Math.min(low, max));
     wrapper.style.fontSize = finalFontSize + 'px';
     setFontSize(finalFontSize);
-  }, [min, max,  children]);
+  }, [min, max, children]);
 
   // Throttled resize handler
   const handleWindowResize = useCallback(
@@ -91,7 +96,7 @@ const Textfit: React.FC<TextfitProps> = ({
 
   // Run process on mount, prop change, or resize
   useLayoutEffect(() => {
-      if (autoResize) {
+    if (autoResize) {
       window.addEventListener('resize', handleWindowResize);
       return () => {
         window.removeEventListener('resize', handleWindowResize);
@@ -102,7 +107,7 @@ const Textfit: React.FC<TextfitProps> = ({
 
   useLayoutEffect(() => {
     process();
-  }, [min, max,  children, style]);
+  }, [min, max, children, style]);
 
   const finalStyle: React.CSSProperties = {
     ...style,
@@ -111,14 +116,10 @@ const Textfit: React.FC<TextfitProps> = ({
 
   return (
     <Parent ref={parentRef} style={finalStyle} className={className} {...props}>
-      <WrapperHidden ref={childRef}>
-        {children}
-      </WrapperHidden>
-      <WrapperVisible>
-        {children}
-      </WrapperVisible>
+      <WrapperHidden ref={childRef}>{children}</WrapperHidden>
+      <WrapperVisible>{children}</WrapperVisible>
     </Parent>
   );
 };
 
-export { Textfit }; 
+export { Textfit };

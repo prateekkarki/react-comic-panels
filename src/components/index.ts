@@ -1,4 +1,4 @@
-export { default as Button } from "./Button";
+export { default as Button } from './Button';
 export { Comic } from './Comic/Comic';
 export { PanelRow } from './PanelRow/PanelRow';
 export { Panel } from './Panel/Panel';

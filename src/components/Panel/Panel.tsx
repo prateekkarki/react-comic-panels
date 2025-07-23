@@ -10,14 +10,16 @@ interface PanelProps {
 export const Panel: React.FC<PanelProps> = ({ size = 1, background, children }) => {
   const style: React.CSSProperties = {
     flex: size,
-    background: background ? (background.startsWith('url(') ? background : background.startsWith('#') ? background : `url(${background})`) : undefined,
+    background: background
+      ? background.startsWith('url(')
+        ? background
+        : background.startsWith('#')
+          ? background
+          : `url(${background})`
+      : undefined,
     backgroundSize: background ? 'cover' : undefined,
     backgroundPosition: background ? 'center' : undefined,
     maxWidth: `${100 * size}%`,
   };
-  return (
-    <PanelContainer style={style}>
-      {children}
-    </PanelContainer>
-  );
-}; 
+  return <PanelContainer style={style}>{children}</PanelContainer>;
+};

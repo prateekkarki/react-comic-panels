@@ -11,9 +11,5 @@ export const PanelRow: React.FC<PanelRowProps> = ({ size, children }) => {
     console.warn('PanelRow size prop should be between 0 and 1.');
   }
   const flexBasis = `${Math.max(0, Math.min(1, size)) * 100}%`;
-  return (
-    <PanelRowContainer style={{ flexBasis }}>
-      {children}
-    </PanelRowContainer>
-  );
-}; 
+  return <PanelRowContainer style={{ flexBasis }}>{children}</PanelRowContainer>;
+};

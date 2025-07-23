@@ -6,7 +6,7 @@ export const SpeechBubbleContainer = styled.div`
   border-radius: 10px;
   font-size: clamp(12px, 2vw, 32px);
   color: #222;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: absolute;
   max-width: 80%;
   word-break: break-word;
@@ -19,4 +19,4 @@ export const SpeechBubbleContainer = styled.div`
 export const SpeechBubbleInner = styled.div`
   padding: 0px 10px;
   height: 100%;
-`; 
+`;

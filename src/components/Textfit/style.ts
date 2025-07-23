@@ -28,4 +28,4 @@ export const WrapperVisible = styled(Wrapper)`
   align-items: center;
   justify-content: center;
   text-align: center;
-`; 
+`;

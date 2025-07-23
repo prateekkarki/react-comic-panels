@@ -1,1 +1,1 @@
-export { Textfit } from './Textfit'; 
+export { Textfit } from './Textfit';

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export interface ButtonProps {
   label: string;
@@ -9,5 +9,3 @@ const Button = (props: ButtonProps) => {
 };
 
 export default Button;
-
-

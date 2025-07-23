@@ -1,1 +1,1 @@
-export { ThoughtBubble } from './ThoughtBubble'; 
+export { ThoughtBubble } from './ThoughtBubble';

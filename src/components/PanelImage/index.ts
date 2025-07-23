@@ -1,1 +1,1 @@
-export { PanelImage } from './PanelImage'; 
+export { PanelImage } from './PanelImage';

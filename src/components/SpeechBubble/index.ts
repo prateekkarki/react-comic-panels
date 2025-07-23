@@ -1,1 +1,1 @@
-export { SpeechBubble } from './SpeechBubble'; 
+export { SpeechBubble } from './SpeechBubble';

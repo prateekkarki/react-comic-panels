@@ -13,5 +13,5 @@ export const ComicContainer = styled.div<{
   display: flex;
   flex-direction: column;
   background: ${({ background }) => background || '#f4f4f4'};
-  ${({ aspectRatio }) => aspectRatio ? `aspect-ratio: ${aspectRatio};` : ''}
-`; 
+  ${({ aspectRatio }) => (aspectRatio ? `aspect-ratio: ${aspectRatio};` : '')}
+`;

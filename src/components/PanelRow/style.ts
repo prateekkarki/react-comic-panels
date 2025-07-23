@@ -9,4 +9,4 @@ export const PanelRowContainer = styled.div`
   &:last-child {
     margin-bottom: 0;
   }
-`; 
+`;
