@@ -13,11 +13,9 @@ interface TextfitProps {
 
 function innerHeight(el: HTMLElement) {
   const style = window.getComputedStyle(el);
-  console.log("innerHeight---", el.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom), el.clientHeight, parseFloat(style.paddingTop), parseFloat(style.paddingBottom));
   return el.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
 }
 function assertElementFitsHeight(el: HTMLElement, height: number) {
-  console.log("height---", el.scrollHeight - 1, height);
   return el.scrollHeight - 1 <= height;
 }
 function throttleFn<T extends (...args: any[]) => void>(fn: T, wait: number): T {
@@ -64,7 +62,6 @@ const Textfit: React.FC<TextfitProps> = ({
 
   // Cancel running process by changing pid
   const cancelProcess = () => {
-    console.log("cancelProcess")
     pidRef.current = uniqueId();
   };
 
@@ -87,7 +84,6 @@ const Textfit: React.FC<TextfitProps> = ({
       if (shouldCancelProcess()) return;
       const mid = (low + high) / 2;
       wrapper.style.fontSize = mid + 'px';
-      console.log('fitsHeight', assertElementFitsHeight(wrapper, originalHeight), `mid: ${mid}, low: ${low}, high: ${high}`);
       if (assertElementFitsHeight(wrapper, originalHeight)) {
         low = mid;
       } else {
@@ -96,7 +92,6 @@ const Textfit: React.FC<TextfitProps> = ({
     }
     // Step 2: Clamp and set
     let finalFontSize = Math.max(min, Math.min(low, max));
-    console.log("finalFontSize", finalFontSize, `low: ${low}, min: ${min}, max: ${max}`);
     if (shouldCancelProcess()) return;
     wrapper.style.fontSize = finalFontSize + 'px';
     setFontSize(finalFontSize);
@@ -131,8 +126,6 @@ const Textfit: React.FC<TextfitProps> = ({
     fontSize: fontSize || undefined,
   };
 
-  console.log("fontSize", fontSize);
-  console.log("finalStyle", finalStyle);
 
   return (
     <div className={`Textfit__parent ${className ?? ""}`} ref={parentRef} style={finalStyle} {...props}>
