@@ -36,11 +36,6 @@ function throttleFn<T extends (...args: any[]) => void>(fn: T, wait: number): T 
   } as T;
 }
 
-let uniqueIdCounter = 0;
-function uniqueId() {
-  return ++uniqueIdCounter;
-}
-
 const DEFAULT_MIN = 1;
 const DEFAULT_MAX = 100;
 const DEFAULT_THROTTLE = 100;
@@ -58,12 +53,6 @@ const Textfit: React.FC<TextfitProps> = ({
   const parentRef = useRef<HTMLDivElement>(null);
   const childRef = useRef<HTMLDivElement>(null);
   const [fontSize, setFontSize] = useState<number | null>(null);
-  const pidRef = useRef<number>(uniqueId());
-
-  // Cancel running process by changing pid
-  const cancelProcess = () => {
-    pidRef.current = uniqueId();
-  };
 
   const process = useCallback(() => {
     const el = parentRef.current;
@@ -74,14 +63,10 @@ const Textfit: React.FC<TextfitProps> = ({
       console.warn('Can not process element without height. Make sure the element is displayed and has a static height.');
       return;
     }
-    const pid = uniqueId();
-    pidRef.current = pid;
-    const shouldCancelProcess = () => pid !== pidRef.current;
     // Step 1: Binary search for height (primary)
     let low = min;
     let high = max;
     while (high - low > 1) {
-      if (shouldCancelProcess()) return;
       const mid = (low + high) / 2;
       wrapper.style.fontSize = mid + 'px';
       if (assertElementFitsHeight(wrapper, originalHeight)) {
@@ -92,7 +77,6 @@ const Textfit: React.FC<TextfitProps> = ({
     }
     // Step 2: Clamp and set
     let finalFontSize = Math.max(min, Math.min(low, max));
-    if (shouldCancelProcess()) return;
     wrapper.style.fontSize = finalFontSize + 'px';
     setFontSize(finalFontSize);
   }, [min, max,  children]);
@@ -118,7 +102,6 @@ const Textfit: React.FC<TextfitProps> = ({
 
   useLayoutEffect(() => {
     process();
-    return cancelProcess;
   }, [min, max,  children, style]);
 
   const finalStyle: React.CSSProperties = {
