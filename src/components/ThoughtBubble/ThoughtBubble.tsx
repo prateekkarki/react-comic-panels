@@ -2,8 +2,7 @@ import React from 'react';
 import { Anchor, Position, Size } from '../types';
 import { getAnchorStyle } from '../../utils/helpers';
 import { Textfit } from '../Textfit';
-
-
+import { ThoughtBubbleContainer, ThoughtBubbleInner } from './style';
 
 interface ThoughtBubbleProps {
   animation?: string;
@@ -19,12 +18,12 @@ export const ThoughtBubble: React.FC<ThoughtBubbleProps> = ({ animation, anchor,
   const style: React.CSSProperties = { ...anchorStyle, ...posStyle, width: `${size.widthRatio * 100}%`, height: `${size.heightRatio * 100}%` };
   if (animation) style.animation = animation;
   return (
-    <div className="comicPanels__thought-bubble" style={style}>
-      <div className="comicPanels__thought-bubble-inner">
-      <Textfit>
+    <ThoughtBubbleContainer style={style}>
+      <ThoughtBubbleInner>
+        <Textfit>
           {children}
         </Textfit>      
-        </div>
-    </div>
+      </ThoughtBubbleInner>
+    </ThoughtBubbleContainer>
   );
 }; 

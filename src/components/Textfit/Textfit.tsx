@@ -1,5 +1,5 @@
 import React, { useRef, useState, useLayoutEffect, useCallback } from 'react';
-import './Textfit.css';
+import { Parent, Wrapper, WrapperHidden, WrapperVisible } from './style';
 
 interface TextfitProps {
   children?: React.ReactNode;
@@ -126,16 +126,15 @@ const Textfit: React.FC<TextfitProps> = ({
     fontSize: fontSize || undefined,
   };
 
-
   return (
-    <div className={`Textfit__parent ${className ?? ""}`} ref={parentRef} style={finalStyle} {...props}>
-      <div className={`Textfit__wrapper Textfit__wrapper--hidden`} ref={childRef}>
+    <Parent ref={parentRef} style={finalStyle} className={className} {...props}>
+      <WrapperHidden ref={childRef}>
         {children}
-      </div>
-      <div className={`Textfit__wrapper Textfit__wrapper--visible`}>
+      </WrapperHidden>
+      <WrapperVisible>
         {children}
-      </div>
-    </div>
+      </WrapperVisible>
+    </Parent>
   );
 };
 

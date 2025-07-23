@@ -1,4 +1,5 @@
 import React from 'react';
+import { PanelRowContainer } from './style';
 
 interface PanelRowProps {
   size: number; // between 0 and 1
@@ -11,11 +12,8 @@ export const PanelRow: React.FC<PanelRowProps> = ({ size, children }) => {
   }
   const flexBasis = `${Math.max(0, Math.min(1, size)) * 100}%`;
   return (
-    <div
-      className="comicPanels__panel-row"
-      style={{ display: 'flex', flexDirection: 'row', width: '100%', flexBasis }}
-    >
+    <PanelRowContainer style={{ flexBasis }}>
       {children}
-    </div>
+    </PanelRowContainer>
   );
 }; 

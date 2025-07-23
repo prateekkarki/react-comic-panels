@@ -1,5 +1,5 @@
 import React from 'react';
-import '../comicPanels.css';
+import { ComicContainer } from './style';
 
 interface ComicProps {
   height?: string | number;
@@ -9,7 +9,6 @@ interface ComicProps {
   children?: React.ReactNode;
 }
 
-export const Comic: React.FC<ComicProps> = ({  width = '100%', aspectRatio = 1, background = '#f4f4f4', children }) => {
-  const style: React.CSSProperties = {  width:aspectRatio ? undefined : width, background, aspectRatio };
-  return <div className="comicPanels" style={style}>{children}</div>;
+export const Comic: React.FC<ComicProps> = ({ width = '100%', aspectRatio = 1, background = '#f4f4f4', children }) => {
+  return <ComicContainer width={width} background={background} aspectRatio={aspectRatio}>{children}</ComicContainer>;
 }; 
